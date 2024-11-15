@@ -79,7 +79,37 @@ videos.forEach(video => {
 });
 	
 	
-	
+// Select all the video elements with the class "video-item"
+const videos = document.querySelectorAll('.video-item');
+
+// Create the intersection observer
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    const video = entry.target;
+
+    if (entry.isIntersecting) {
+      // Add the source back and play when video is in view
+      if (!video.src) {
+        const sourceElement = video.querySelector('source');
+        video.src = sourceElement.getAttribute('src');
+        video.load(); // Reload the video with the source
+      }
+      video.play();
+    } else {
+      // Pause the video and remove the source to stop downloading when out of view
+      video.pause();
+      video.removeAttribute('src'); // This prevents further download
+      video.load(); // This stops the video from consuming data
+    }
+  });
+}, {
+  threshold: 0.5 // Adjust the threshold for visibility
+});
+
+// Observe each video
+videos.forEach(video => {
+  observer.observe(video);
+});	
 	
 	
 	
