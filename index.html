@@ -42,79 +42,47 @@
 <link rel="stylesheet" href="css/style.css">
 	
 	
-	<script type='text/javascript'>
+<script type='text/javascript'>
+  // Smartlook initialization script
   window.smartlook||(function(d) {
     var o=smartlook=function(){ o.api.push(arguments)},h=d.getElementsByTagName('head')[0];
     var c=d.createElement('script');o.api=new Array();c.async=true;c.type='text/javascript';
     c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);
-    })(document);
-    smartlook('init', '19fc70edcddbea1f4d3f7d7145dc943fcc68b927', { region: 'eu' });
+  })(document);
+  smartlook('init', '19fc70edcddbea1f4d3f7d7145dc943fcc68b927', { region: 'eu' });
 
-	
-	
-	// Select all the video elements with the class "video-item" preload="none"
-const videos = document.querySelectorAll('.video-item');
+  // Select all the video elements with the class "video-item"
+  const videos = document.querySelectorAll('.video-item');
 
-// Create the intersection observer
-const observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    const video = entry.target;
+  // Create the intersection observer
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      const video = entry.target;
 
-    // Check if the video is in view
-    if (entry.isIntersecting) {
-      // Play the video
-      video.play();
-    } else {
-      // Pause the video when it's out of view
-      video.pause();
-    }
-  });
-}, {
-  threshold: 0.5 // Adjust the threshold for triggering (0.5 means 50% of the video should be visible)
-});
-
-// Observe each video
-videos.forEach(video => {
-  observer.observe(video);
-});
-	
-	
-// Select all the video elements with the class "video-item" preload="none"
-const videos = document.querySelectorAll('.video-item');
-
-// Create the intersection observer
-const observer = new IntersectionObserver((entries, observer) => {
-  entries.forEach(entry => {
-    const video = entry.target;
-
-    if (entry.isIntersecting) {
-      // Add the source back and play when video is in view
-      if (!video.src) {
-        const sourceElement = video.querySelector('source');
-        video.src = sourceElement.getAttribute('src');
-        video.load(); // Reload the video with the source
+      if (entry.isIntersecting) {
+        // Add the source back and play when video is in view
+        if (!video.src) {
+          const sourceElement = video.querySelector('source');
+          video.src = sourceElement.getAttribute('src');
+          video.load(); // Reload the video with the source
+        }
+        video.play();
+      } else {
+        // Pause the video and remove the source to stop downloading when out of view
+        video.pause();
+        video.removeAttribute('src'); // This prevents further download
+        video.load(); // This stops the video from consuming data
       }
-      video.play();
-    } else {
-      // Pause the video and remove the source to stop downloading when out of view
-      video.pause();
-      video.removeAttribute('src'); // This prevents further download
-      video.load(); // This stops the video from consuming data
-    }
+    });
+  }, {
+    threshold: 0.5 // Adjust the threshold for visibility
   });
-}, {
-  threshold: 0.5 // Adjust the threshold for visibility
-});
 
-// Observe each video
-videos.forEach(video => {
-  observer.observe(video);
-});	
-	
-	
-	
-	
-	</script>
+  // Observe each video
+  videos.forEach(video => {
+    observer.observe(video);
+  });
+</script>
 	
 	
 </head>
