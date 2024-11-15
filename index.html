@@ -49,7 +49,42 @@
     c.charset='utf-8';c.src='https://web-sdk.smartlook.com/recorder.js';h.appendChild(c);
     })(document);
     smartlook('init', '19fc70edcddbea1f4d3f7d7145dc943fcc68b927', { region: 'eu' });
-</script>
+
+	
+	
+	// Select all the video elements with the class "video-item"
+const videos = document.querySelectorAll('.video-item');
+
+// Create the intersection observer
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    const video = entry.target;
+
+    // Check if the video is in view
+    if (entry.isIntersecting) {
+      // Play the video
+      video.play();
+    } else {
+      // Pause the video when it's out of view
+      video.pause();
+    }
+  });
+}, {
+  threshold: 0.5 // Adjust the threshold for triggering (0.5 means 50% of the video should be visible)
+});
+
+// Observe each video
+videos.forEach(video => {
+  observer.observe(video);
+});
+	
+	
+	
+	
+	
+	
+	
+	</script>
 	
 	
 </head>
